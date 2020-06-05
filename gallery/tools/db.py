@@ -35,8 +35,9 @@ def list_users():
     for row in execute('select * from users'):
         print(row_string.format(user_name=row[0],password=row[1],full_name=row[2]))
         
-def add_user():
+def add_user(user_name,password,full_name):
     print("add_user")
+    execute("INSERT INTO users (user_name, password, full_name) VALUES (%s,%s,%s);",(user_name,password,full_name))
     
 def edit_user():
     print("edit_user")
@@ -61,7 +62,10 @@ def main():
         if command == "1":
             list_users()
         elif command == "2":
-            add_user()
+            user_name = input("Username> ")
+            password = input("Password> ")
+            full_name = input("Full name> ")
+            add_user(user_name,password,full_name)
         elif command == "3":
             edit_user()
         elif command == "4":
