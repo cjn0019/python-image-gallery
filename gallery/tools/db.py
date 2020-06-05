@@ -41,7 +41,7 @@ def add_user(username,password,full_name):
     
 def edit_user(username,password,full_name):
     print("edit_user")
-    execute("update users set password=%s,full_name=%s where username='%s'",(username,password,full_name))
+    execute("update users set password=%s,full_name=%s where username=%s",(username,password,full_name))
     
 def delete_user():
     print("delete_user")
