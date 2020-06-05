@@ -30,10 +30,10 @@ def execute(query,args=None):
 def list_users():
     print("list_users") 
     row_string = "{user_name:10}\t{password:10}\t{full_name:20}"
-    print(row_string.format("username","password","full name"))
+    print(row_string.format(user_name="username",password="password",full_name="full name"))
     print("---------------------------------------------")
     for row in execute('select * from users'):
-        print(row_string.format(row[0],row[1],row[2]))
+        print(row_string.format(user_name=row[0],password=row[1],full_name=row[2]))
         
 def add_user():
     print("add_user")
