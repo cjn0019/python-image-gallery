@@ -34,21 +34,27 @@ def list_users():
     print("---------------------------------------------")
     for row in execute('select * from users'):
         print(row_string.format(username=row[0],password=row[1],full_name=row[2]))
+    print()
         
 def add_user(username,password,full_name):
     print("add_user")
     execute("INSERT INTO users (username, password, full_name) VALUES (%s,%s,%s);",(username,password,full_name))
+    print()
     
 def edit_user(username,password,full_name):
     print("edit_user")
     execute("UPDATE users SET password=%s,full_name=%s WHERE username=%s;",(password,full_name,username))
+    print()
     
-def delete_user():
+def delete_user(username):
     print("delete_user")
+    execute("DELETE FROM users WHERE username=%s;",(username))
+    print()
     
 def quit_menu():
     print("quit_menu")
-
+    print()
+    
 def main():
     connect()
     
@@ -74,7 +80,11 @@ def main():
             full_name = input("full name (press enter to keep current)> ")
             edit_user(username,password,full_name)
         elif command == "4":
-            delete_user()
+            username = input("enter username to delete> ")
+            answer = input("Are you sure that you want to delete "+username+"?  y/n: ") 
+            if answer.lower() == "y":
+                print("Deleted.")
+                delete_user(username)
         elif command == "5":
             quit_menu()
             break
