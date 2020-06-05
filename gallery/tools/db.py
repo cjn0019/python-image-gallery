@@ -39,8 +39,9 @@ def add_user(username,password,full_name):
     print("add_user")
     execute("INSERT INTO users (username, password, full_name) VALUES (%s,%s,%s);",(username,password,full_name))
     
-def edit_user():
+def edit_user(username,password,full_name):
     print("edit_user")
+    execute("update users set password=%s,full_name=%s where username='%s'",(username,password,full_name))
     
 def delete_user():
     print("delete_user")
@@ -59,6 +60,7 @@ def main():
         print("5)  Quit")
     
         command = input("Enter command> ")
+        print()
         if command == "1":
             list_users()
         elif command == "2":
@@ -67,7 +69,10 @@ def main():
             full_name = input("Full name> ")
             add_user(username,password,full_name)
         elif command == "3":
-            edit_user()
+            username = input("Username to edit> ")
+            password = input("New password (press enter to keep current)> ")
+            full_name = input("full name (press enter to keep current)> ")
+            edit_user(username,password,full_name)
         elif command == "4":
             delete_user()
         elif command == "5":
