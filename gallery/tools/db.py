@@ -48,7 +48,7 @@ def edit_user(username,password,full_name):
     
 def delete_user(username):
     print("delete_user")
-    execute("DELETE FROM users WHERE username=%s;",(username))
+    execute("DELETE FROM users WHERE username=%s;",(username,))
     print()
     
 def quit_menu():
