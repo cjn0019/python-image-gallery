@@ -37,16 +37,26 @@ def list_users():
     print()
         
 def add_user(username,password,full_name):
-    execute("INSERT INTO users (username, password, full_name) VALUES (%s,%s,%s);",(username,password,full_name))
+    if len(execute("SELECT * FROM users WHERE username=%s;",(username,))) == 0: 
+        execute("INSERT INTO users (username, password, full_name) VALUES (%s,%s,%s);",(username,password,full_name))
+    else:
+        print("Error:  user already exists.")
     
 def edit_user(username,password,full_name):
-    execute("UPDATE users SET password=%s,full_name=%s WHERE username=%s;",(password,full_name,username))
-    
+    if len(execute("SELECT * FROM users WHERE username=%s;",(username,))) == 0:
+        print("No such user.")
+    elif password != "" and full_name != "":
+        execute("UPDATE users SET password=%s,full_name=%s WHERE username=%s;",(password,full_name,username))
+    elif password != "" and full_name == "":
+        execute("UPDATE users SET password=%s WHERE username=%s;",(password,username))
+    elif password == "" and full_name != "":
+        execute("UPDATE users SET full_name=%s WHERE username=%s;",(full_name,username))
+        
 def delete_user(username):
     execute("DELETE FROM users WHERE username=%s;",(username,))
     
 def quit_menu():
-    print("quit_menu")
+    print("Bye.")
     
 def main():
     connect()
