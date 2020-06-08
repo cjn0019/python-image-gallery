@@ -27,6 +27,12 @@ def execute(query,args=None):
         cursor.execute(query, args)    
     return cursor
 
+def user_exists(username):
+    if execute("SELECT * FROM users WHERE username=%s;",(username,)).rowcount == 0: 
+        return False
+    else: 
+        return True
+
 def list_users():
     print("list_users") 
     row_string = "{username:10}\t{password:10}\t{full_name:20}"
@@ -37,13 +43,13 @@ def list_users():
     print()
         
 def add_user(username,password,full_name):
-    if execute("SELECT * FROM users WHERE username=%s;",(username,)).rowcount == 0: 
-        execute("INSERT INTO users (username, password, full_name) VALUES (%s,%s,%s);",(username,password,full_name))
-    else:
+    if user_exists(username): 
         print("Error:  user already exists.")
+    else:
+        execute("INSERT INTO users (username, password, full_name) VALUES (%s,%s,%s);",(username,password,full_name))
     
 def edit_user(username,password,full_name):
-    if execute("SELECT * FROM users WHERE username=%s;",(username,)).rowcount == 0:
+    if not user_exists(username): 
         print("No such user.")
     elif password != "" and full_name != "":
         execute("UPDATE users SET password=%s,full_name=%s WHERE username=%s;",(password,full_name,username))
@@ -53,7 +59,10 @@ def edit_user(username,password,full_name):
         execute("UPDATE users SET full_name=%s WHERE username=%s;",(full_name,username))
         
 def delete_user(username):
-    execute("DELETE FROM users WHERE username=%s;",(username,))
+    if not user_exists(username): 
+        print("No such user.")
+    else:
+        execute("DELETE FROM users WHERE username=%s;",(username,))
     
 def quit_menu():
     print("Bye.")
