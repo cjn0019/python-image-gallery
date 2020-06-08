@@ -37,13 +37,13 @@ def list_users():
     print()
         
 def add_user(username,password,full_name):
-    if len(execute("SELECT * FROM users WHERE username=%s;",(username,))) == 0: 
+    if execute("SELECT * FROM users WHERE username=%s;",(username,)).rowcount == 0: 
         execute("INSERT INTO users (username, password, full_name) VALUES (%s,%s,%s);",(username,password,full_name))
     else:
         print("Error:  user already exists.")
     
 def edit_user(username,password,full_name):
-    if len(execute("SELECT * FROM users WHERE username=%s;",(username,))) == 0:
+    if execute("SELECT * FROM users WHERE username=%s;",(username,)).rowcount == 0:
         print("No such user.")
     elif password != "" and full_name != "":
         execute("UPDATE users SET password=%s,full_name=%s WHERE username=%s;",(password,full_name,username))
