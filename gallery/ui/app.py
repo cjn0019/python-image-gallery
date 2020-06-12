@@ -20,4 +20,7 @@ def index():
 def goodbye():
     return 'Goodbye'
 
-##@app.route('/great/')
+@app.route('/greet/<name>')
+def greet(name):
+    return 'Nice to meet you' + name
+
