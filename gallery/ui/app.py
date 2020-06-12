@@ -19,3 +19,5 @@ def index():
 @app.route('/goodbye')
 def goodbye():
     return 'Goodbye'
+
+@app.route('/great/')
