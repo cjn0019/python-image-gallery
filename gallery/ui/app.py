@@ -1,4 +1,7 @@
 from flask import Flask
+from flask import request
+from flask import render_template
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -22,5 +25,18 @@ def goodbye():
 
 @app.route('/greet/<name>')
 def greet(name):
-    return 'Nice to meet you' + name
+    return 'Nice to meet you ' + name
 
+@app.route('/add/<int:x>/<int:y>', methods = ['GET'])
+def add(x, y):
+    return 'The sum is ' + str(x + y)
+
+@app.route('/mult')
+def mult():
+    x = request.args['x']
+    y = request.args['y']
+    return 'The product is ' + str(int(x)*int(y))
+
+@app.route('/calculator')
+def calculator():
+    return render_template('calculator.html')
