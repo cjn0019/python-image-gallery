@@ -92,7 +92,7 @@ def index():
 """
 @app.route('/admin', methods = ['GET'])
 def users():
-    string = """
+    html = """
 <html>
     <head>
         <title>List Users</title>
@@ -107,13 +107,13 @@ def users():
 """
 
     for user in get_users():
-        string += '<tr>'
-        string += '<td><a href="/admin/edit/{}">{}</a></td>'.format(user[0], user[0])
-        string += '<td>' + user[2] + '</td>'
-        string += '<td><a href="/admin/delete/{}>delete</a></td>'.format(user[0])
-        string += '</tr>'
+        html += '<tr>'
+        html += '<td><a href="/admin/edit/{}">{}</a></td>'.format(user[0], user[0])
+        html += '<td>' + user[2] + '</td>'
+        html += '<td><a href="/admin/delete/{}>delete</a></td>'.format(user[0])
+        html += '</tr>'
 
-    string += """
+    html += """
         </table>
         <form action="/admin/add" method="POST">
             Username<input type="text" name="username"><br>
@@ -124,6 +124,7 @@ def users():
     </body>
 </html>
 """
+    return html
 
 @app.route('/admin/add', methods = ['POST'])
 def user_add_post():
