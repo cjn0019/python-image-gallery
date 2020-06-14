@@ -4,30 +4,31 @@ from flask import render_template
 
 import psycopg2
 import json
-from secrets import get_secret_image_gallery
+## from secrets import get_secret_image_gallery
 
 connection = None
 
-def get_secret():
-    jsonString = get_secret_image_gallery()
-    return json.loads(jsonString)
-
-def get_password(secret):
-    return secret['password']
-
-def get_host(secret):
-    return secret['host']
-
-def get_username(secret):
-    return secret['username']
-
-def get_dbname(secret):
-    return secret['database_name']
+# def get_secret():
+#     jsonString = get_secret_image_gallery()
+#     return json.loads(jsonString)
+#  
+# def get_password(secret):
+#     return secret['password']
+#  
+# def get_host(secret):
+#     return secret['host']
+#  
+# def get_username(secret):
+#     return secret['username']
+#  
+# def get_dbname(secret):
+#     return secret['database_name']
 
 def connect():
     global connection
-    secret = get_secret()
-    connection = psycopg2.connect(host=get_host(secret), dbname=get_dbname(secret), user=get_username(secret), password=get_password(secret))
+##    secret = get_secret()
+##    connection = psycopg2.connect(host=get_host(secret), dbname=get_dbname(secret), user=get_username(secret), password=get_password(secret))
+    connection = psycopg2.connect(host="image-gallery.cvii1d1fvgqo.us-west-1.rds.amazonaws.com", dbname="image_gallery", user="image_gallery", password="(9!1bT=*lgmKkeFu#8<HlxyXJ&|W$Y]G")
 
 def execute(query,args=None):
     global connection
