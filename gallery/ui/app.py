@@ -143,7 +143,7 @@ def user_edit(username):
         <title>Edit User </title>
     </head>
     <body>
-        <form action="/admin/edit" method="POST">
+        <form action="/admin/edit/{}" method="POST">
             <input type="hidden" name="username" value="{}"><br>
             Password:  <input type="password" name="password"><br>
             Full Name: <input type="text" name="full_name"><br>
