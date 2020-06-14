@@ -156,7 +156,25 @@ def user_edit(username):
         edit_user(request.form["username"], request.form["password"], request.form["full_name"])
     return redirect('/admin')
 
-@app.route('/admin/delete/<username>', methods = ['GET'])
+@app.route('/admin/delete/<username>', methods=['GET', 'POST'])
 def user_delete(username):
-    delete_user(username)
-    return redirect('/admin')
+    if request.method == 'GET':
+        return """
+    <html>
+        <head>
+            <title>Delete User</title>
+        </head>
+        <body>
+            Are you sure you want to delete user {}?
+            <form action="/admin/delete/{}" method="POST">
+                <input type="submit" value="Yes">
+            </form>
+            <form action="/admin" method="GET">
+                <input type="submit" value="No">
+            </form>
+        </body>
+    </html>
+    """.format(username, username)
+    else:
+        delete_user(username)
+        return redirect('/admin')
