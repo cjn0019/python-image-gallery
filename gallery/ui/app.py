@@ -5,7 +5,7 @@ from flask import redirect
 
 import psycopg2
 import json
-from gallery.tools.db import get_username
+#from gallery.tools.db import get_username
 ## from secrets import get_secret_image_gallery
 
 connection = None
