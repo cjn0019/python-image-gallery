@@ -101,8 +101,8 @@ def users():
         <table>
             <tr>
                 <th>Username</th>
-                <th>Password</th>
                 <th>Full Name</th>
+                <th></th>
             </tr>
 """
 
@@ -110,12 +110,12 @@ def users():
         html += '<tr>'
         html += '<td><a href="/admin/edit/{}">{}</a></td>'.format(user[0], user[0])
         html += '<td>' + user[2] + '</td>'
-        html += '<td><a href="/admin/delete/{}>delete</a></td>'.format(user[0])
+        html += '<td><a href="/admin/delete/{}">delete</a></td>'.format(user[0])
         html += '</tr>'
 
     html += """
         </table>
-        <br><br><br>
+        <br><br>
         <form action="/admin/add" method="POST">
             Username<input type="text" name="username"><br>
             Password<input type="text" name="password"><br>
@@ -140,7 +140,7 @@ def user_edit(username):
         <title>Edit User </title>
     </head>
     <body>
-        <form action="/admin/edit">
+        <form action="/admin/edit" method="POST">
             <input type="hidden" name="{}"<br>
             Password: <input type="password" name="password"><br>
             Full Name: <input type="text" name="full_name"><br>
