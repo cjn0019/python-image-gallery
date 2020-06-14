@@ -117,6 +117,22 @@ def users():
     html += """
         </table>
         <br><br>
+        <form action="/admin/add_user" method="GET">
+            <input type="submit" value="Add User">
+        </form>
+    </body>
+</html>
+"""
+    return html
+
+@app.route('/admin/add_user', methods = ['GET'])
+def user_add():
+    return """
+<html>
+    <head>
+        <title>Add User</title>
+    </head>
+    <body>
         <form action="/admin/add" method="POST">
             Username:  <input type="text" name="username"><br>
             Password:  <input type="text" name="password"><br>
@@ -127,7 +143,6 @@ def users():
     </body>
 </html>
 """
-    return html
 
 @app.route('/admin/add', methods = ['POST'])
 def user_add_post():
