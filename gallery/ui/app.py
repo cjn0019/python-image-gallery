@@ -75,7 +75,7 @@ def delete_user(username):
     else:
         execute("DELETE FROM users WHERE username=%s;",(username,))
     
-##connect()
+connect()
 
 
 app = Flask(__name__)
