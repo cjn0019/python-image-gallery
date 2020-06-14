@@ -121,6 +121,7 @@ def users():
             Username:  <input type="text" name="username"><br>
             Password:  <input type="text" name="password"><br>
             Full name: <input type="text" name="full_name"><br>
+            <br><br>
             <input type="submit" value="Submit">
         </form>
     </body>
@@ -133,9 +134,10 @@ def user_add_post():
     add_user(request.form["username"], request.form["password"], request.form["full_name"])
     return redirect('/admin')
 
-@app.route('/admin/edit/<username>', methods = ['GET'])
+@app.route('/admin/edit/<username>', methods = ['GET', 'POST'])
 def user_edit(username):
-    return """
+    if request.method == "GET":
+        return """
 <html>
     <head>
         <title>Edit User </title>
@@ -150,10 +152,8 @@ def user_edit(username):
     </body>
 </html>
 """.format(username)
-
-@app.route('/admin/edit/<username>', methods = ['POST'])
-def user_edit_post():
-    edit_user(request.form["username"], request.form["password"], request.form["full_name"])
+    else:
+        edit_user(request.form["username"], request.form["password"], request.form["full_name"])
     return redirect('/admin')
 
 @app.route('/admin/delete/<username>', methods = ['GET'])
