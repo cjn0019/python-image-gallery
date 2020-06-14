@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import request
 from flask import render_template
+from flask import redirect
 
 import psycopg2
 import json
+from gallery.tools.db import get_username
 ## from secrets import get_secret_image_gallery
 
 connection = None
@@ -26,8 +28,8 @@ connection = None
 
 def connect():
     global connection
-##    secret = get_secret()
-##    connection = psycopg2.connect(host=get_host(secret), dbname=get_dbname(secret), user=get_username(secret), password=get_password(secret))
+#   secret = get_secret()
+#   connection = psycopg2.connect(host=get_host(secret), dbname=get_dbname(secret), user=get_username(secret), password=get_password(secret))
     connection = psycopg2.connect(host="image-gallery.cvii1d1fvgqo.us-west-1.rds.amazonaws.com", dbname="image_gallery", user="image_gallery", password="(9!1bT=*lgmKkeFu#8<HlxyXJ&|W$Y]G")
 
 def execute(query,args=None):
@@ -45,15 +47,9 @@ def user_exists(username):
     else: 
         return True
 
-def list_users():
-    print("list_users") 
-    row_string = "{username:10}\t{password:10}\t{full_name:20}"
-    print(row_string.format(username="username",password="password",full_name="full name"))
-    print("---------------------------------------------")
-    for row in execute('select * from users'):
-        print(row_string.format(username=row[0],password=row[1],full_name=row[2]))
-    print()
-        
+def get_users():
+    return execute('SELECT * FROM users')
+
 def add_user(username,password,full_name):
     if user_exists(username): 
         print("Error:  user already exists.")
@@ -78,7 +74,6 @@ def delete_user(username):
     
 connect()
 
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -95,27 +90,69 @@ def index():
     </body>
 </html>
 """
+@app.route('/admin', methods = ['GET'])
+def users():
+    string = """
+<html>
+    <head>
+        <title>List Users</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Full Name</th>
+            </tr>
+"""
 
-@app.route('/admin')
-def admin():
-    list_users()
-    return 'Goodbye'
+    for user in get_users:
+        string += '<tr>'
+        string += '<td><a href="/admin/edit/{}">{}</a></td>'.format(user[0], user[0])
+        string += '<td>' + user[2] + '</td>'
+        string += '<td><a href="/admin/delete/{}>delete</a></td>'.format(user[0])
+        string += '</tr>'
 
-@app.route('/greet/<name>')
-def greet(name):
-    return 'Nice to meet you ' + name
+    string += """
+        </table>
+        <form action="/admin/add" method="POST">
+            Username<input type="text" name="username"><br>
+            Password<input type="text" name="password"><br>
+            Full name<input type="text" name="full_name"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
+"""
 
-@app.route('/add/<int:x>/<int:y>', methods = ['GET'])
-def add(x, y):
-    return 'The sum is ' + str(x + y)
+@app.route('/admin/add', methods = ['POST'])
+def user_add_post():
+    add_user(request.form["username"], request.form["password"], request.form["full_name"])
+    return redirect('/admin')
 
-@app.route('/mult')
-def mult():
-    x = request.args['x']
-    y = request.args['y']
-    return 'The product is ' + str(int(x)*int(y))
+@app.route('/admin/edit/<username>', methods = ['GET'])
+def user_edit(username):
+    return """
+<html>
+    <head>
+        <title>Edit User</title>
+    </head>
+    <body>
+        <form action="/admin/edit">
+            Username to Edit<input type="text" name="username"><br>
+            <input type="hidden" name="{}"<br>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
+""".format(username)
 
-@app.route('/calculator')
-def calculator():
-    return render_template('calculator.html')
+@app.route('/admin/edit/<username>', methods = ['POST'])
+def user_edit_post():
+    edit_user(request.form["username"], request.form["password"], request.form["full_name"])
+    return redirect('/admin')
 
+@app.route('/admin/delete/<username>', methods = ['GET'])
+def user_delete(username):
+    delete_user(username)
+    return redirect('/admin')
