@@ -106,7 +106,7 @@ def users():
             </tr>
 """
 
-    for user in get_users:
+    for user in get_users():
         string += '<tr>'
         string += '<td><a href="/admin/edit/{}">{}</a></td>'.format(user[0], user[0])
         string += '<td>' + user[2] + '</td>'
