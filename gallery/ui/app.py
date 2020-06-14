@@ -151,7 +151,7 @@ def user_edit(username):
         </form>
     </body>
 </html>
-""".format(username)
+""".format(username, username)
     else:
         edit_user(request.form["username"], request.form["password"], request.form["full_name"])
     return redirect('/admin')
