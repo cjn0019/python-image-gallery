@@ -38,7 +38,8 @@ def execute(query,args=None):
     if not args:
         cursor.execute(query)
     else:
-        cursor.execute(query, args)    
+        cursor.execute(query, args) 
+    connection.commit()   
     return cursor
 
 def user_exists(username):
