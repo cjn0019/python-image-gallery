@@ -115,6 +115,7 @@ def users():
 
     html += """
         </table>
+        <br><br><br>
         <form action="/admin/add" method="POST">
             Username<input type="text" name="username"><br>
             Password<input type="text" name="password"><br>
@@ -136,12 +137,13 @@ def user_edit(username):
     return """
 <html>
     <head>
-        <title>Edit User</title>
+        <title>Edit User </title>
     </head>
     <body>
         <form action="/admin/edit">
-            Username to Edit<input type="text" name="username"><br>
             <input type="hidden" name="{}"<br>
+            Password: <input type="password" name="password"><br>
+            Full Name: <input type="text" name="full_name"><br>
             <input type="submit" value="Submit">
         </form>
     </body>
