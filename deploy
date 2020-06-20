@@ -6,3 +6,5 @@ if [ "$#" != "1" ]; then
 fi
 
 aws s3 cp ec2-scripts/ec2-prod-$1.sh s3://image-gallery-s3-cjn0019
+aws s3 cp /etc/nginx/nginx.conf s3://image-gallery-s3-cjn0019/etc/nginx/nginx.conf
+aws s3 cp /etc/nginx/default.d/image_gallery.conf s3://image-gallery-s3-cjn0019/etc/nginx/default.d/image_gallery.conf
