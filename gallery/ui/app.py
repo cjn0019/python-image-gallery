@@ -35,7 +35,7 @@ def connect():
         password = os.getenv("IG_PASSWD")
     else:
         with open(os.getenv("IG_PASSWD_FILE"), "r") as file:
-            password = file.readall().rstrip()
+            password = file.read().rstrip()
             
     print("PG_HOST", os.getenv("PG_HOST"))
     print("PG_PORT", os.getenv("PG_PORT"))
