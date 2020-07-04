@@ -31,6 +31,11 @@ def connect():
     global connection
 #   secret = get_secret()
 #   connection = psycopg2.connect(host=get_host(secret), dbname=get_dbname(secret), user=get_username(secret), password=get_password(secret))
+    print("PG_HOST", os.getenv("PG_HOST"))
+    print("PG_PORT", os.getenv("PG_PORT"))
+    print("IG_DATABASE", os.getenv("IG_DATABASE"))
+    print("IG_USER", os.getenv("IG_USER"))
+    print("IG_PASSWD", os.getenv("IG_PASSWD"))
     connection = psycopg2.connect(host=os.getenv("PG_HOST"), port=os.getenv("PG_PORT"), dbname=os.getenv("IG_DATABASE"), user=os.getenv("IG_USER"), password=os.getenv("IG_PASSWD"))
 
 def execute(query,args=None):
