@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask import render_template
 from flask import redirect
+import os
 
 import psycopg2
 import json
@@ -79,7 +80,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return """
+    return os.getenv("test") + """
 <!DOCTYPE html>
 <html>
     <head>
