@@ -31,7 +31,7 @@ def connect():
     global connection
 #   secret = get_secret()
 #   connection = psycopg2.connect(host=get_host(secret), dbname=get_dbname(secret), user=get_username(secret), password=get_password(secret))
-    connection = psycopg2.connect(host="image-gallery.cvii1d1fvgqo.us-west-1.rds.amazonaws.com", dbname="image_gallery", user="image_gallery", password="(9!1bT=*lgmKkeFu#8<HlxyXJ&|W$Y]G")
+    connection = psycopg2.connect(host=os.getenv("PG_HOST"), port=os.getenv("PG_PORT"), dbname=os.getenv("IG_DATABASE"), user=os.getenv("IG_USER"), password=os.getenv("IG_PASSWD"))
 
 def execute(query,args=None):
     global connection
@@ -80,7 +80,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return os.getenv("test") + """
+    return """
 <!DOCTYPE html>
 <html>
     <head>
