@@ -30,7 +30,7 @@ connection = None
 #     return secret['database_name']
 
 def check_admin():
-    return 'username' in session and session['username'] == 'mickey'
+    return 'username' in session and session['username'] == 'dongji'
 
 def connect():
     global connection
@@ -106,7 +106,7 @@ def requires_admin(view):
         return view(**kwargs)
     return decorated
 
-@app.route('/invalidlogin')
+@app.route('/invalidlogin', methods=['GET'])
 def invalidLogin():
     return """
 <!DOCTYPE html>
