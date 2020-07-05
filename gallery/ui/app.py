@@ -30,7 +30,7 @@ connection = None
 #     return secret['database_name']
 
 def check_admin():
-    return 'username' in session and session['username'] == 'dongji'
+    return 'username' in session and session['username'] == 'mickey'
 
 def connect():
     global connection
@@ -107,8 +107,23 @@ def requires_admin(view):
 
 @app.route('/invalidlogin')
 def invalidLogin():
-    return "Invalid"
-
+    return """
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Invalid Login</h1>
+        <form action="/login" method="POST">
+          Username: <input name="username" value="" /><br />
+          Password: <input type="password" name="password" value="" /><br />
+          <input type="submit" value="Login" />
+          </form>
+    </body>
+</html>
+"""
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
