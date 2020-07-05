@@ -1,0 +1,25 @@
+CREATE TABLE public.users (
+    username character varying(100) NOT NULL,
+    password character varying(100),
+    full_name character varying(200)
+);
+
+ALTER TABLE public.users OWNER TO image_gallery;
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: image_gallery
+--
+
+COPY public.users (username, password, full_name) FROM stdin;
+mickey  mighty  Mickey Mouse
+aaa     sss     xxx
+Testy   Testyy  Test Testy
+dongji  cpsc4973   Dongji Feng
+\.
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: image_gallery
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (username);
