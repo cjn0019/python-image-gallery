@@ -128,11 +128,8 @@ def invalidLogin():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = get_user_by_username(request.form["username"])
-        print("user", user)
-        print("username", user.username)
-        print("password", user.password)
-        if user is None or user.password != request.form["password"]:
+        row = get_user_by_username(request.form["username"])
+        if row is None or row[1] != request.form["password"]:
             return redirect('/invalidLogin')
         else:
             session['username'] = request.form["username"]
