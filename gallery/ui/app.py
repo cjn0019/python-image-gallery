@@ -2,10 +2,12 @@ from flask import Flask
 from flask import request
 from flask import render_template
 from flask import redirect
+from flask import session 
 import os
 
 import psycopg2
 import json
+from builtins import None
 #from gallery.tools.db import get_username
 ## from secrets import get_secret_image_gallery
 
@@ -26,6 +28,21 @@ connection = None
 #  
 # def get_dbname(secret):
 #     return secret['database_name']
+
+def check_admin():
+    return 'username' in session and session['username'] == 'dongji'
+
+def requires_admin(view):
+    @wraps(view)
+    def decorated(**kwargs):
+        if not check_admin():
+            return redirect('/login')
+        return view(**kwargs)
+    return decorated
+
+@app.route('/invalidlogin')
+def invalidLogin():
+    return "Invalid"
 
 def connect():
     global connection
@@ -53,6 +70,9 @@ def execute(query,args=None):
         cursor.execute(query, args) 
     connection.commit()   
     return cursor
+
+def get_user_by_username(username):
+    return execute("select * from users where username=%s", (username)).fetchone()
 
 def user_exists(username):
     if execute("SELECT * FROM users WHERE username=%s;",(username,)).rowcount == 0: 
@@ -89,6 +109,42 @@ connect()
 
 app = Flask(__name__)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        user = get_user_by_username(request.form["username"])
+        if user is None or user.password != request.form["password"]:
+            return redirect('/invalidLogin')
+        else:
+            session['username'] = request.form["username"]
+            return redirect("/debugSession")
+    else:
+        return """
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Login</h1>
+        <form action="/login" method="POST">
+          Username: <input name="username" value="" /><br />
+          Password: <input type="password" name="password" value="" /><br />
+          <input type="submit" value="Login" />
+          </form>
+    </body>
+</html>
+"""
+
+@app.route('/debugSession')
+def debugSession():
+    result = ""
+    for key,value in session.items():
+        result += key+"->"+str(value)+"<br />"
+    return result
+
+
 @app.route('/')
 def index():
     return """
@@ -104,6 +160,7 @@ def index():
 </html>
 """
 @app.route('/admin', methods = ['GET'])
+@requires_admin
 def users():
     html = """
 <html>
@@ -138,6 +195,7 @@ def users():
     return html
 
 @app.route('/admin/add_user', methods = ['GET'])
+@requires_admin
 def user_add():
     return """
 <html>
@@ -157,11 +215,13 @@ def user_add():
 """
 
 @app.route('/admin/add', methods = ['POST'])
+@requires_admin
 def user_add_post():
     add_user(request.form["username"], request.form["password"], request.form["full_name"])
     return redirect('/admin')
 
 @app.route('/admin/edit/<username>', methods = ['GET', 'POST'])
+@requires_admin
 def user_edit(username):
     if request.method == "GET":
         return """
@@ -184,6 +244,7 @@ def user_edit(username):
     return redirect('/admin')
 
 @app.route('/admin/delete/<username>', methods=['GET', 'POST'])
+@requires_admin
 def user_delete(username):
     if request.method == 'GET':
         return """
