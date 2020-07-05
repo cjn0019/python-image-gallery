@@ -106,7 +106,7 @@ def requires_admin(view):
         return view(**kwargs)
     return decorated
 
-@app.route('/invalidlogin', methods=['GET'])
+@app.route('/invalidLogin', methods=['GET'])
 def invalidLogin():
     return """
 <!DOCTYPE html>
