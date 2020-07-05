@@ -60,7 +60,7 @@ def execute(query,args=None):
     return cursor
 
 def get_user_by_username(username):
-    return execute("select * from users where username=%s", (username)).fetchone()
+    return execute("select * from users where username=%s", (username,)).fetchone()
 
 def user_exists(username):
     if execute("SELECT * FROM users WHERE username=%s;",(username,)).rowcount == 0: 
