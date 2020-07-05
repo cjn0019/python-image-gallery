@@ -129,6 +129,9 @@ def invalidLogin():
 def login():
     if request.method == 'POST':
         user = get_user_by_username(request.form["username"])
+        print("user", user)
+        print("username", user.username)
+        print("password", user.password)
         if user is None or user.password != request.form["password"]:
             return redirect('/invalidLogin')
         else:
