@@ -7,7 +7,7 @@ import os
 
 import psycopg2
 import json
-from builtins import None
+
 #from gallery.tools.db import get_username
 ## from secrets import get_secret_image_gallery
 
