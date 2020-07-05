@@ -1,12 +1,12 @@
 from flask import Flask
 from flask import request
-from flask import render_template
 from flask import redirect
 from flask import session 
+from functools import wraps
 import os
 
+
 import psycopg2
-import json
 
 #from gallery.tools.db import get_username
 ## from secrets import get_secret_image_gallery
