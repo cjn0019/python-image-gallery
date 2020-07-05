@@ -32,18 +32,6 @@ connection = None
 def check_admin():
     return 'username' in session and session['username'] == 'dongji'
 
-def requires_admin(view):
-    @wraps(view)
-    def decorated(**kwargs):
-        if not check_admin():
-            return redirect('/login')
-        return view(**kwargs)
-    return decorated
-
-@app.route('/invalidlogin')
-def invalidLogin():
-    return "Invalid"
-
 def connect():
     global connection
 #   secret = get_secret()
@@ -108,6 +96,19 @@ def delete_user(username):
 connect()
 
 app = Flask(__name__)
+
+def requires_admin(view):
+    @wraps(view)
+    def decorated(**kwargs):
+        if not check_admin():
+            return redirect('/login')
+        return view(**kwargs)
+    return decorated
+
+@app.route('/invalidlogin')
+def invalidLogin():
+    return "Invalid"
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
